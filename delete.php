@@ -6,7 +6,7 @@ require_once('Initialize.php');
       $id = $_GET['id'];
       delete_task_by_id($id);
     }
-    if(isset($_GET['task_id'])){
+    if( isset($_GET['task_id']) && isset($_GET['user_id']) ){
       delete_assigned_task($_GET['task_id'], $_GET['user_id']);;
       header("Location: Admin_page.php");
     }

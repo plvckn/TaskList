@@ -8,10 +8,25 @@ function is_get_request() {
   return $_SERVER['REQUEST_METHOD'] == 'GET';
 }
 
-function Insert_user($username, $first_name, $last_name, $email, $password) {
+function Insert_into_user($username, $first_name, $last_name, $email, $password) {
   global $db;
 
   $sql = "INSERT INTO user ";
+  $sql .= "(username, first_name, last_name, Email, password) ";
+  $sql .= "VALUES (";
+  $sql .= "'" . $username . "',";
+  $sql .= "'" . $first_name . "',";
+  $sql .= "'" . $last_name . "',";
+  $sql .= "'" . $email . "',";
+  $sql .= "'" . password_hash($password, PASSWORD_BCRYPT) . "'";
+  $sql .= ")";
+  $result = mysqli_query($db, $sql);
+}
+
+function Insert_into_admin($username, $first_name, $last_name, $email, $password) {
+  global $db;
+
+  $sql = "INSERT INTO admin ";
   $sql .= "(username, first_name, last_name, Email, password) ";
   $sql .= "VALUES (";
   $sql .= "'" . $username . "',";
@@ -27,6 +42,10 @@ function user_exists($username){
   return find_user_by_username($username);
 }
 
+function admin_exists($username){
+  return find_admin_by_username($username);
+}
+
 function find_user_by_username($username) {
   global $db;
 
@@ -40,19 +59,39 @@ function find_user_by_username($username) {
   } else return false;
 }
 
-function user_is_admin($username, $password){
+function find_admin_by_username($username) {
   global $db;
 
-  if($username == "admin"){
-    $sql = "SELECT password FROM user ";
-    $sql .= "WHERE username='" . $username . "'";
-    $result = mysqli_query($db, $sql);
-    $user = mysqli_fetch_assoc($result);
-    mysqli_free_result($result);
-    if($user['password'] == $password){
-      return true;
-    } else return false;
-  } return false;
+  $sql = "SELECT * FROM admin ";
+  $sql .= "WHERE username='" . $username . "'";
+  $result = mysqli_query($db, $sql);
+  $user = mysqli_fetch_assoc($result);
+  mysqli_free_result($result);
+  if(!empty($user)){
+    return $user;
+  } else return false;
+}
+
+function find_user_by_id($id) {
+  global $db;
+
+  $sql = "SELECT * FROM user ";
+  $sql .= "WHERE username='" . $id . "'";
+  $result = mysqli_query($db, $sql);
+  $user = mysqli_fetch_assoc($result);
+  mysqli_free_result($result);
+  if(!empty($user)){
+    return $user;
+  } else return false;
+}
+
+function user_is_admin($username){
+  global $db;
+
+  $sql = "SELECT * FROM admin WHERE username='$username'";
+  $result = mysqli_query($db, $sql);
+
+  return mysqli_fetch_assoc($result);
 }
 
 function find_all_tasks(){

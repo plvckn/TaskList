@@ -31,3 +31,13 @@ CREATE TABLE Assigned_task (
   FOREIGN KEY (task_id) REFERENCES Task(id),
   FOREIGN KEY (user_id) REFERENCES User(id)
 );
+
+CREATE TABLE Admin (
+  id INT(11) NOT NULL AUTO_INCREMENT,
+  username VARCHAR(255),
+  first_name VARCHAR(255),
+  last_name VARCHAR(255),
+  Email VARCHAR(255),
+  password VARCHAR(255),
+  PRIMARY KEY (id)
+);

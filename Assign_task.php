@@ -19,7 +19,7 @@ if(is_get_request()){
   <div id="content">
     <h1>Assign task to user</h1>
       Select user id to assign task</br>
-      <form method="post">
+      <form action="Assign_task.php" method="post">
       <select name = "userselect">
         <?php while($user = mysqli_fetch_assoc($user_list)){?>
         <option value="<?php echo $user['id']; ?>"><?php echo $user['id']; ?></option>
@@ -31,6 +31,7 @@ if(is_get_request()){
       </div>
       <br/><a href="Admin_page.php" >Go back</a>
 </body>
+
 <?php
   if(is_post_request()){
     if(isset($_POST['userselect']) and isset($_POST['taskID'])){
